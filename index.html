@@ -6,7 +6,6 @@
 <title>Just One Question 💘</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
@@ -21,7 +20,7 @@ body {
     overflow: hidden;
 }
 
-/* floating blobs */
+/* blobs */
 .blob {
     position: absolute;
     border-radius: 50%;
@@ -29,7 +28,6 @@ body {
     opacity: 0.6;
     animation: float 10s infinite alternate ease-in-out;
 }
-
 .blob1 { width: 300px; height: 300px; background:#cdb4ff; top:10%; left:10%; }
 .blob2 { width: 250px; height: 250px; background:#b8a2ff; bottom:10%; right:10%; }
 
@@ -40,27 +38,20 @@ body {
 
 /* card */
 .card {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255,255,255,0.95);
     backdrop-filter: blur(18px);
     padding: 40px 30px;
     border-radius: 28px;
     text-align: center;
     width: 350px;
-    box-shadow: 0 15px 40px rgba(120, 90, 200, 0.15);
-    border: 1px solid rgba(180, 160, 255, 0.4);
-    animation: pop 0.8s ease;
-}
-
-@keyframes pop {
-    from { transform: scale(0.85); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    box-shadow: 0 15px 40px rgba(120,90,200,0.15);
+    border: 1px solid rgba(180,160,255,0.4);
 }
 
 h2 {
-    font-weight: 600;
     color: #5a4a8a;
     margin-bottom: 30px;
-    transition: 0.3s ease;
+    transition: 0.3s;
 }
 
 /* buttons */
@@ -75,31 +66,42 @@ button {
     padding: 14px 28px;
     font-size: 16px;
     cursor: pointer;
-    transition: all 0.25s ease;
     position: absolute;
+    transition: 0.25s;
 }
 
-/* YES */
 #yes {
     left: 20%;
-    background: linear-gradient(135deg, #9d7bff, #c8b6ff);
+    background: linear-gradient(135deg,#9d7bff,#c8b6ff);
     color: white;
-    box-shadow: 0 5px 15px rgba(157, 123, 255, 0.4);
 }
 
-/* NO */
 #no {
     left: 55%;
-    background: rgba(255,255,255,0.9);
-    color: #777;
+    background: #fff;
     border: 1px solid rgba(160,140,255,0.3);
 }
 
-/* hint */
-.hint {
-    margin-top: 20px;
-    font-size: 13px;
-    color: #7a6ca8;
+/* ending screen */
+.endScreen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #cdb4ff, #b8a2ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    font-size: 28px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.6s ease;
+}
+
+.endScreen.show {
+    opacity: 1;
+    pointer-events: all;
 }
 </style>
 </head>
@@ -116,8 +118,11 @@ button {
         <button id="yes">Yes 💖</button>
         <button id="no">No 😅</button>
     </div>
+</div>
 
-    <div class="hint">be honest hehe</div>
+<div class="endScreen" id="endScreen">
+    💖 You said YES 💖<br><br>
+    You're mine now 😏
 </div>
 
 <script>
@@ -125,10 +130,10 @@ const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const question = document.getElementById("question");
 const card = document.querySelector(".card");
+const endScreen = document.getElementById("endScreen");
 
 let scale = 1;
 
-// move NO + grow YES
 function moveNo() {
     const cardRect = card.getBoundingClientRect();
     const btnRect = noBtn.getBoundingClientRect();
@@ -139,36 +144,36 @@ function moveNo() {
     noBtn.style.left = Math.random() * maxX + "px";
     noBtn.style.top = Math.random() * maxY + "px";
 
-    // grow YES continuously
     scale += 0.2;
     yesBtn.style.transform = `scale(${scale})`;
 
-    // when YES dominates screen
     if (scale >= 3) {
         question.innerHTML = "just say yes 💖🥺";
     }
 }
 
-// hover (desktop)
 noBtn.addEventListener("mouseenter", moveNo);
-
-// tap (mobile)
 noBtn.addEventListener("click", (e) => {
     e.preventDefault();
     moveNo();
 });
 
-// YES click
 yesBtn.addEventListener("click", () => {
-    confetti({
-        particleCount: 250,
-        spread: 120,
-        origin: { y: 0.6 }
-    });
 
+    // reset size
+    scale = 1;
+    yesBtn.style.transform = "scale(1)";
+
+    // show ending screen
+    endScreen.classList.add("show");
+
+    // confetti burst
+    confetti({ particleCount: 300, spread: 140 });
+
+    // open new tab/message
     setTimeout(() => {
-        alert("I knew it 💖");
-    }, 400);
+        window.open("https://www.google.com/search?q=I+love+you", "_blank");
+    }, 1200);
 });
 </script>
 
