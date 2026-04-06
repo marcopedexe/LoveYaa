@@ -51,7 +51,6 @@ body {
 h2 {
     color: #5a4a8a;
     margin-bottom: 30px;
-    transition: 0.3s;
 }
 
 /* buttons */
@@ -70,12 +69,14 @@ button {
     transition: 0.25s;
 }
 
+/* YES */
 #yes {
     left: 20%;
     background: linear-gradient(135deg,#9d7bff,#c8b6ff);
     color: white;
 }
 
+/* NO */
 #no {
     left: 55%;
     background: #fff;
@@ -128,7 +129,6 @@ button {
 <script>
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
-const question = document.getElementById("question");
 const card = document.querySelector(".card");
 const endScreen = document.getElementById("endScreen");
 
@@ -144,11 +144,13 @@ function moveNo() {
     noBtn.style.left = Math.random() * maxX + "px";
     noBtn.style.top = Math.random() * maxY + "px";
 
+    // grow YES
     scale += 0.2;
     yesBtn.style.transform = `scale(${scale})`;
 
+    // change YES text when big
     if (scale >= 3) {
-        question.innerHTML = "just say yes 💖🥺";
+        yesBtn.innerHTML = "just say yes 💖🥺";
     }
 }
 
@@ -160,19 +162,20 @@ noBtn.addEventListener("click", (e) => {
 
 yesBtn.addEventListener("click", () => {
 
-    // reset size
+    // reset
     scale = 1;
     yesBtn.style.transform = "scale(1)";
+    yesBtn.innerHTML = "Yes 💖";
 
     // show ending screen
     endScreen.classList.add("show");
 
-    // confetti burst
+    // confetti
     confetti({ particleCount: 300, spread: 140 });
 
-    // open new tab/message
+    // open new tab
     setTimeout(() => {
-        window.open("https://www.google.com/search?q=I+love+you", "_blank");
+        window.open("https://youtu.be/nxfHXrzddMY?si=7S-RRe18OG5B6env", "_blank");
     }, 1200);
 });
 </script>
