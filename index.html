@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Be My Valentine 💘</title>
+    <title>Just a Question 💘</title>
 
     <!-- Fonts -->
     <link
@@ -34,20 +34,11 @@
         }
 
         @keyframes bgMove {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* Card */
         .card {
             width: min(92%, 420px);
             padding: 40px 30px 45px;
@@ -63,18 +54,10 @@
         }
 
         @keyframes cardIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Glow ring */
         .card::before {
             content: "";
             position: absolute;
@@ -93,31 +76,17 @@
         }
 
         @keyframes heartbeat {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            25% {
-                transform: scale(1.08);
-            }
-
-            50% {
-                transform: scale(1);
-            }
-
-            75% {
-                transform: scale(1.12);
-            }
+            0%,100% { transform: scale(1); }
+            25% { transform: scale(1.08); }
+            75% { transform: scale(1.12); }
         }
 
         h2 {
             font-family: "Playfair Display", serif;
-            font-size: 28px;
+            font-size: 26px;
             color: #4a1c2f;
             margin-bottom: 30px;
-            line-height: 1.35;
+            line-height: 1.4;
         }
 
         .buttons {
@@ -131,26 +100,14 @@
             border-radius: 40px;
             border: none;
             font-size: 16px;
-            font-weight: 500;
             cursor: pointer;
             transition: all 0.25s ease;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        button:active {
-            transform: scale(0.94);
         }
 
         #yes {
             left: 12%;
             background: linear-gradient(135deg, #ff4d6d, #ff758f);
             color: #fff;
-            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.55);
-        }
-
-        #yes:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(255, 77, 109, 0.7);
         }
 
         #no {
@@ -166,49 +123,15 @@
             font-style: italic;
         }
 
-        /* Floating depth hearts */
         .heart {
             position: absolute;
             bottom: -20px;
             animation: floatUp linear forwards;
-            pointer-events: none;
-            filter: blur(0.3px);
         }
 
         @keyframes floatUp {
-            from {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-
-            to {
-                transform: translateY(-120vh) scale(1.8);
-                opacity: 0;
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 480px) {
-            h2 {
-                font-size: 23px;
-            }
-
-            .emoji {
-                font-size: 58px;
-            }
-
-            button {
-                padding: 12px 28px;
-                font-size: 15px;
-            }
-
-            #yes {
-                left: 8%;
-            }
-
-            #no {
-                left: 55%;
-            }
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-120vh); opacity: 0; }
         }
     </style>
 </head>
@@ -217,17 +140,19 @@
 
     <div class="card">
         <div class="emoji">🐱❤️</div>
-        <h2>Aditi,<br>will you be my Valentine?</h2>
+
+        <!-- SWEET & SIMPLE -->
+        <h2>Aditi,<br>I just wanted to ask…<br>do you love me? 💗</h2>
 
         <div class="buttons">
             <button id="yes">Yes 💖</button>
             <button id="no">No 🙈</button>
         </div>
 
-        <div class="hint">Some love stories don’t allow “no” ✨</div>
+        <!-- VERY IMPORTANT 😌 -->
+        <div class="hint">No pressure… just be honest 💞</div>
     </div>
 
-    <!-- Sounds -->
     <audio id="hoverSound" src="https://assets.mixkit.co/sfx/preview/mixkit-cartoon-voice-laugh-343.mp3"></audio>
     <audio id="yesSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"></audio>
 
@@ -238,9 +163,16 @@
         const hoverSound = document.getElementById("hoverSound");
         const yesSound = document.getElementById("yesSound");
 
+        // enable sound after first tap (mobile fix)
+        document.body.addEventListener("click", () => {
+            hoverSound.muted = false;
+            yesSound.muted = false;
+        }, { once: true });
+
+        // playful "no" button
         noBtn.addEventListener("mouseenter", () => {
             hoverSound.currentTime = 0;
-            hoverSound.play();
+            hoverSound.play().catch(() => {});
 
             const cardRect = card.getBoundingClientRect();
             const btnRect = noBtn.getBoundingClientRect();
@@ -252,6 +184,7 @@
             noBtn.style.top = Math.random() * maxY + "px";
         });
 
+        // YES button
         yesBtn.addEventListener("click", () => {
             yesSound.play();
 
@@ -261,26 +194,25 @@
                 origin: { y: 0.65 }
             });
 
-            // Send email via FormSubmit
-            fetch("https://formsubmit.co/ajax/demo@gmail.com", {
+            // send result (PUT YOUR EMAIL HERE)
+            fetch("https://formsubmit.co/ajax/yourrealemail@gmail.com", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    message: "She said YES! 💖"
+                    message: "She said YES 💖",
+                    _captcha: false
                 })
-            })
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(error => console.log(error));
+            });
 
             setTimeout(() => {
-                alert("YAY 💕 I can’t wait for Valentine’s Day with you!");
+                alert("That’s all I needed to hear 💖");
             }, 500);
         });
 
+        // floating hearts
         function createHeart() {
             const heart = document.createElement("div");
             heart.className = "heart";
@@ -288,13 +220,12 @@
             heart.style.left = Math.random() * 100 + "vw";
             heart.style.fontSize = Math.random() * 22 + 14 + "px";
             heart.style.animationDuration = Math.random() * 3 + 4 + "s";
-            heart.style.opacity = Math.random() * 0.5 + 0.4;
 
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 8000);
         }
 
-        setInterval(createHeart, 380);
+        setInterval(createHeart, 400);
     </script>
 
 </body>
